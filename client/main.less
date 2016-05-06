@@ -9,9 +9,25 @@ html, body {
   padding: 0;
 }
 
+input {
+  box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+}
+
+.transition {
+  -webkit-transition: all 0.2s linear;
+  -moz-transition: all 0.2s linear;
+  -ms-transition: all 0.2s linear;
+  -o-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+
 .app {
   header {
     text-align: center;
+    position: fixed;
+    width: 100%;
     h1 {
       background: #F7F7F7;
       color: #FFA3A3;
@@ -31,7 +47,7 @@ html, body {
     }
   }
   footer {
-    position: absolute;
+    position: fixed;
     display: block;
     margin: auto;
     left: 0;
@@ -54,14 +70,62 @@ html, body {
     }
   }
   .container {
-    max-width: 900px;
+    max-width: 400px;
     margin: 0 auto;
+    padding-bottom: 57px;
+    padding-top: 91px;
+    @media (max-width: 768px) {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
     ul {
       padding: 0;
-      list-style: square;
+      list-style: none;
       li {
         padding: 0;
         margin-bottom: 10px;
+        cursor: pointer;
+        padding: 10px;
+        // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 1px 1px 0px rgba(0, 0, 0, 0.15);
+        background: #FFF;
+        border-bottom: 2px solid transparent;
+        font-size: 14px;
+        &.checked {
+          text-decoration: line-through;
+          color: #A0A0A0;
+        }
+        &:hover {
+          .transition();
+          border-bottom: 2px solid #56489E;
+        }
+        button {
+          border: none;
+          background: transparent;
+          float: right;
+          color: #FFA3A3;
+          outline: none;
+          &:hover {
+            background: #FFA3A3;
+            cursor: pointer;
+            color: #FFF;
+            border-radius: 5px;
+            .transition();
+          }
+        }
+      }
+    }
+    form {
+      input {
+        width: 100%;
+        padding: 10px 0;
+        border: none;
+        outline: none;
+        border-bottom: 1px solid #DDD;
+        .transition();
+        &:focus {
+          border-bottom: 1px solid #56489E;
+        }
       }
     }
   }

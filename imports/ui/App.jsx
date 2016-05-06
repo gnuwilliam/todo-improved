@@ -1,11 +1,30 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Component } from 'react';
+import { PropTypes } from 'react';
+import { createContainer } from 'meteor/react-meteor-data';
+import { Tasks } from '../api/tasks.js';
 
 import Task from './Task.jsx';
 
-// App Component - represents the whole app
-export default class App extends Component {
-  getTasks() {
+class App extends Component {
+  handleSubmit (event) {
+    event.preventDefault();
+
+    // find text input, get value and trim it
+    const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim();
+
+    // insert Task into the database
+    Tasks.insert({
+      text,
+      createdAt: new Date()
+    });
+
+    // clear input value
+    ReactDOM.findDOMNode(this.refs.textInput).value = '';
+  }
+
+  getTasks () {
     return [
       { _id: 1, text: 'Build React App' },
       { _id: 2, text: 'Test React App' },
@@ -13,13 +32,13 @@ export default class App extends Component {
     ];
   }
 
-  renderTasks() {
-    return this.getTasks().map((task) => (
+  renderTasks () {
+    return this.props.tasks.map((task) => (
       <Task key={task._id} task={task} />
     ));
   }
 
-  render() {
+  render () {
     return (
       <div className="app">
         <header>
@@ -31,15 +50,27 @@ export default class App extends Component {
           <ul>
             {this.renderTasks()}
           </ul>
+          <form className="new-task" onSubmit={this.handleSubmit.bind(this)}>
+            <input type="text" ref="textInput" placeholder="Type to add new task <Enter>" required/>
+          </form>
         </div>
 
         <footer>
           <small>
-            made with <span>♥</span> by &nbsp;
-            <a href="https://github.com/gnuwilliam">@gnuwilliam</a>
+            made with <span>♥</span> by <a href="https://github.com/gnuwilliam">@gnuwilliam</a>
           </small>
         </footer>
       </div>
     );
   }
 }
+
+App.propTypes = {
+  tasks: PropTypes.array.isRequired
+}
+
+export default createContainer(() => {
+  return {
+    tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch({})
+  };
+}, App);

@@ -1,3 +1,3 @@
-# Meteor ToDo web app
+### todolist - get things done
 
-Built with React
+Simple todo app built with Meteor and React
